@@ -65,7 +65,7 @@
 = リーダブルコードとは（3）
 
   # blockquote
-  # title = はじめに p. 3
+  # title = 1.2 読みやすさの基本定理 p. 3
 
   「コードを理解する」というのは、変更を加えたりバグを見つけたりできるという意味
 
@@ -104,6 +104,213 @@
 
 (('tag:center'))(('note:「優れた」コードって何？ p. 2より'))
 
-= 実例で考えよう（1）
+= どちらがリーダブル？
 
-  * 君のコードをよくする
+  # coderay cpp
+
+  // どちらがリーダブルコード？どうして？
+  // リーダブルコード：変更できる・バグを見つけられるコード
+  // A.
+  Node* node = list->head;
+  if (node == NULL) return;
+  while (node->next != NULL) {
+      Print(node->data);
+      node = node->next;
+  }
+  if (node != NULL) Print(node->data);
+  // B.
+  for (Node* node = list->head; node != NULL; node = node->next)
+      Print(node->data);
+
+(('tag:center'))(('note:「優れた」コードって何？ p. 2より'))
+
+= 実例で考えよう
+
+(('tag:center'))(('tag:large'))
+3章「誤解されない名前」\n
+より
+
+((' '))
+
+= 3.1 例：filter()（1）
+
+  # coderay python
+
+  results =
+    Database.all_objects.filter("year <= 2011")
+
+(({results}))はなに？
+
+  * 2011年以前のレコード？
+  * 2012年以降のレコード？
+
+= 3.1 例：filter()（2）
+
+  * filterはあいまいな言葉
+    * 選択する→(({select()}))
+    * 除外する→(({exclude()}))
+
+  select("year <= 2011")
+  exclude("year <= 2011")
+
+= 3.2 例：Clip()（1）
+
+    # coderay python
+
+    # textの最後を切り落として、
+    # 「...」をつける
+    def Clip(text, length):
+
+  * 最後から(({length}))文字を削除する？
+  * 最大(({length}))文字まで切り詰める？
+
+= 3.2 例：Clip()（2）
+
+切り詰めるなら：(({Clip}))→(({Truncate}))
+
+  # coderay python
+
+  def Clip(text, length):
+  # ↓
+  def Truncate(text, length):
+
+= 3.2 例：Clip()（3）
+
+((*最大*))(({length}))文字なら：(({max}))をつける
+
+  # coderay python
+
+  def Truncate(text, length):
+  # ↓
+  def Truncate(text, max_length):
+
+= 3.2 例：Clip()（4）
+
+最大(({length}))((*文字*))なら：\n
+(({length}))→(({chars}))
+
+  # coderay python
+
+  def Truncate(text, max_length):
+  # ↓
+  def Truncate(text, max_chars):
+
+= 3.3 限界値（1）
+
+ショッピングカートに入る商品が\n
+最大10点のケース
+
+  # coderay python
+
+  CART_TOO_BIG_LIMIT = 10
+
+  if cart.num_items() >= CART_TOO_BIG_LIMIT:
+      Error("カートにある商品数が多すぎます。")
+
+= 3.3 限界値（2）
+
+(('tag:center'))
+バグあり！\n
+9点までしか入らない
+
+  # coderay python
+
+  CART_TOO_BIG_LIMIT = 10
+
+  if cart.num_items() >= CART_TOO_BIG_LIMIT:
+      Error("カートにある商品数が多すぎます。")
+
+= 3.3 限界値（3）
+
+  * (({CART_TOO_BIG_LIMIT}))はあいまい
+    * 未満？以下？→境界値の情報がない
+  * (({MAX_ITEMS_IN_CARTS}))は明確
+    * この値が最大値（境界値を含む）
+    * 最大値のときは(({max}))を使おう！\n
+      (('note:（最小値のときは(({min}))）'))
+
+= 3.3 限界値（4）
+
+  # coderay python
+
+  # CART_TOO_BIG_LIMIT = 10
+  # if cart.num_items() >= CART_TOO_BIG_LIMIT:
+  #     Error("カートにある商品数が多すぎます。")
+  MAX_ITEMS_IN_CARTS = 10
+  if cart.num_items() > MAX_ITEMS_IN_CARTS:
+      Error("カートにある商品数が多すぎます。")
+
+= 他の例
+
+  * 範囲を指定するときは\n
+    (({first}))と(({last}))を使う
+  * 包括／排他的範囲には\n
+    (({begn}))と(({end}))を使う
+  * …
+  * （詳細は本を買ってください）
+
+= 実際の改善にチャレンジ！
+
+    # coderay php
+
+    /* schooの学生名一覧を返す
+       引数は返す学生名の最大値 */
+    function student($num) {
+      /* 処理の具体的な内容 */
+    }
+
+  * 誤解されない名前に改善して投稿
+  * よい投稿に「いいね！」して応援
+
+= まとめ（1）
+
+  * リーダブルコードとは
+    * 変更できるコード
+    * バグを見つけられるコード
+    * ↑は((*読む人視点*))
+
+= まとめ（2）
+
+  * 「誤解されない名前」を考えた
+    * (({filter}))はあいまい
+    * (({Clip}))もあいまい
+    * (({TOO_BIG_LIMIT}))もあいまい
+
+= まとめ（3）
+
+  * 実際の改善にチャレンジした
+    * 「((*読む人*))が理解しやすいか？」を\n
+      とことん考えたはず
+
+  # blockquote
+  # title = 3章 誤解されない名前 p. 30
+
+  名前が「他の意味と間違えられることはないだろうか？」と何度も自問自答する
+
+= これから（1）
+
+  * これからも((*読む人*))のことを\n
+    考えてコードを書こう
+  * ((*読む人*))のことを考えるには？
+    * 読む経験をたくさん積む
+    * たくさんコードを読もう
+
+= これから（2）
+
+  * たくさんコードを読むコツ
+    * コードから学ぶ気持ちで読む
+    * ○いいこと探し
+    * ×悪いこと探し
+    * 本来、コードを読むことは\n
+      楽しいことのはず！
+
+= これから（3）
+
+(('tag:center'))(('tag:large'))
+「解説」を読む\n
+(('note:http://www.clear-code.com/blog/2012/6/11.html'))
+
+  * 本文：((*個人*))で\n
+    リーダブルコードを書く方法
+  * 解説：((*チーム*))で\n
+    リーダブルコードを書く方法

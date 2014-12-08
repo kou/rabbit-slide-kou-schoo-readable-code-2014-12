@@ -174,6 +174,22 @@
   select("year <= 2011")
   exclude("year <= 2011")
 
+= 番外1：sort()（1）
+
+  * どっちの名前がよい？
+    * sort()
+    * quick_sort()/merge_sort()
+
+= 番外1：sort()（2）
+
+  * ((*ソートすること*))が重要
+    * sort()
+  * ソート((*方法*))が重要
+    * quick_sort()/merge_sort()
+
+ヒント：抽象化・カプセル化\n
+(('note:（abstraction barrier, abstraction layer）'))
+
 = 3.2 例：Clip()（1）
 
     # coderay python
@@ -215,6 +231,24 @@
   def Truncate(text, max_length):
   # ↓
   def Truncate(text, max_chars):
+
+= 番外2：add()（1）
+
+  * どの名前がよい？
+    * add()
+    * append()/prepend()
+
+= 番外2：add()（2）
+
+  * ((*追加すること*))が重要\n
+    (('note:例：集合に追加するとき'))
+    * add()
+  * 追加する((*場所*))が重要\n
+    (('note:例：リストに追加するとき'))
+    * append()/prepend()
+
+ヒント：抽象化・カプセル化\n
+(('note:（abstraction barrier, abstraction layer）'))
 
 = 3.3 限界値（1）
 

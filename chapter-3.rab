@@ -245,7 +245,7 @@
 
   * (({CART_TOO_BIG_LIMIT}))はあいまい
     * 未満？以下？→境界値の情報がない
-  * (({MAX_ITEMS_IN_CARTS}))は明確
+  * (({MAX_ITEMS_IN_CART}))は明確
     * この値が最大値（境界値を含む）
     * 最大値のときは(({max}))を使おう！\n
       (('note:（最小値のときは(({min}))）'))
@@ -257,16 +257,16 @@
   # CART_TOO_BIG_LIMIT = 10
   # if cart.num_items() >= CART_TOO_BIG_LIMIT:
   #     Error("カートにある商品数が多すぎます。")
-  MAX_ITEMS_IN_CARTS = 10
-  if cart.num_items() > MAX_ITEMS_IN_CARTS:
+  MAX_ITEMS_IN_CART = 10
+  if cart.num_items() > MAX_ITEMS_IN_CART:
       Error("カートにある商品数が多すぎます。")
 
 = 他の例
 
   * 範囲を指定するときは\n
     (({first}))と(({last}))を使う
-  * 包括／排他的範囲には\n
-    (({begn}))と(({end}))を使う
+  * 包含／排他的範囲には\n
+    (({begin}))と(({end}))を使う
   * …
   * （詳細は本を買ってください）
 
@@ -294,8 +294,11 @@
 
   * 「誤解されない名前」を考えた
     * (({filter}))はあいまい
+      * →(({select}))/(({exclude}))
     * (({Clip}))もあいまい
+      * →(({Truncate}))
     * (({TOO_BIG_LIMIT}))もあいまい
+      * →(({MAX_ITEMS_IN_CART}))
 
 = まとめ（3）
 
